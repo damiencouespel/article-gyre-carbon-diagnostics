@@ -2,7 +2,9 @@
 Python scripts used to plot the figure of the article on the sensitivity to resolution of the ocean carbon uptake.
 
 - main_article_gyre_carbon_cc_v4.py
-  > produce figure 1 to 4
+  > produce figure 1 to 4 and some supplementary figures
+- main_article_gyre_carbon_cc_supp.py
+  > produce supplementary figures
 - main_carbon_box_budget.py
   > compute the carbon budget for producing figure 4
 - main_carbon_box_budget_cc27_dictrd_correction_missing_values.py
