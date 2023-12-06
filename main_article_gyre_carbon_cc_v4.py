@@ -20,15 +20,16 @@ res  = ['1', '1_KL2000', '1_KL500', '1_KGM500_KL500', '1_KGM2000_KL2000', '9', '
 rplt = ['AVG1', '+STD', '-STD', 'R9', 'R27']
 unc = 1. # number of std for uncertainty
 
-plot_fig1          = True
+plot_fig1          = False
 plot_fig2tst       = False
-plot_fig2          = False
+plot_fig2          = True
 plot_fig2bis       = False
 plot_fig3          = False
 plot_fig3_bis      = False
 plot_fig3_ter      = False
 savevalues_fig4    = False
 savevalues_fig4_1d = False
+print_temperature  = False
 
 ##################################################
 # FIG1
@@ -199,8 +200,8 @@ if plot_fig1 :
     #zax = plt.subplot2grid((nrow, ncol), (0, 0), colspan=2, fig=fig)
     zax = ax[0, 0]
     zwdata = data2plot['atmco2']
-    ll1, = zax.plot(zwdata['year'], zwdata['CTL'], label='CTL'         , c='royalblue') 
-    ll2, = zax.plot(zwdata['year'], zwdata['CC'] , label='BGC and COU' , c='firebrick')
+    ll1, = zax.plot(zwdata['year'], zwdata['CTL'], label='CTL and RAD', c='royalblue') 
+    ll2, = zax.plot(zwdata['year'], zwdata['CC'] , label='BGC and COU', c='firebrick')
     zax.set_title('('+subnum.pop()+') Forcing: atm. pCO$_2$', loc='left')
     zax.set_xlim(0, 70)
     zax.set_xlabel('Time')
@@ -220,7 +221,7 @@ if plot_fig1 :
     zax = ax[0, 1]
     zwdata = data2plot['atmtemp']
     ll1, = zax.plot(zwdata['year'], zwdata['CTL'], label='CTL and BGC', color='royalblue')
-    ll2, = zax.plot(zwdata['year'], zwdata['CC' ], label='COU'        , color='firebrick')
+    ll2, = zax.plot(zwdata['year'], zwdata['CC' ], label='COU and RAD', color='firebrick')
     zax.set_title('('+subnum.pop()+') Forcing: atm. temperature\n     at sea surface', loc='left')
     zax.set_xlim(0, 70)
     zax.set_xlabel('Time')
@@ -853,6 +854,7 @@ if plot_fig2 :
     # PLOT
     #====================
 
+    
     print("> plot")
     print(datetime.datetime.now())
 
@@ -880,7 +882,7 @@ if plot_fig2 :
     #--------------------
     # COU - CTL VS TIME
     #--------------------
-
+    embed()
     vdata = data2plot['COU - CTL']
     zax = ax[0, 0]
     X = data2plot['year']
@@ -898,7 +900,7 @@ if plot_fig2 :
         labels.append(names[vres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') COU $-$ CTL\n', loc='left')
+    zax.set_title('('+subnum.pop()+') Total CO$_2$\n', loc='left')
     zax.set_ylabel('[mol$\,$C$\,$m$^{-2}$]')
     zax.set_ylim((-20, 60))
     zax.locator_params(axis='y', nbins=6)
@@ -922,7 +924,7 @@ if plot_fig2 :
         zl, = zax.plot(X, Y, **kwlines[vres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') BGC $-$ CTL\n     Carbon-concentration feedback', loc='left')
+    zax.set_title('('+subnum.pop()+') Anthropogenic CO$_2$\n(carbon-concentration feedback)', loc='left')
 
     #--------------------
     # GAMMA: COU - BGC VS TEMPERATURE CHANGE
@@ -942,7 +944,7 @@ if plot_fig2 :
         zl, = zax.plot(X, Y, **kwlines[vres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') COU$-$BGC\n     Carbon-climate feedback', loc='left')
+    zax.set_title('('+subnum.pop()+') Climate feedback on total CO$_2$\n(carbon-climate feedback)', loc='left')
 
     #--------------------
     # X AXES
@@ -1035,7 +1037,7 @@ if plot_fig2 :
 
     for zax in ax.flatten(): zax.axhline(0, lw=1, color='dimgrey')
     
-    fig.suptitle(r'Cumulated CO${\bf_2}$ uptake', x=0.06, ha='left', fontweight='bold', y=.98)
+    fig.suptitle(r'Cumulated air-sea CO${\bf_2}$ flux', x=0.06, ha='left', fontweight='bold', y=.98)
     fig.tight_layout()
 
     for zax in fig.axes : zax.tick_params(color='dimgrey')
@@ -1046,7 +1048,7 @@ if plot_fig2 :
 #
 
 ####################
-# FIG2BIS
+# Fig2bis
 ####################
 
 if plot_fig2bis :
@@ -1755,7 +1757,7 @@ if plot_fig3_bis :
         labels.append(names[zres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') DIC in CTL', loc='left')
+    zax.set_title('('+subnum.pop()+') DIC pre-industrial state\n', loc='left')
     zax.set_xlim((2000, 2200))       
     zax.locator_params(axis='x', nbins=3)
 
@@ -1784,7 +1786,7 @@ if plot_fig3_bis :
         zl, = zax.plot(X, Y, **kwlines[zres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') DIC change, '+r'BGC – CTL', loc='left')
+    zax.set_title('('+subnum.pop()+') Anthropogenic DIC\n', loc='left')
     zax.set_xlim((-20, 100))       
     zax.locator_params(axis='x', nbins=3)
 
@@ -1810,7 +1812,7 @@ if plot_fig3_bis :
         zl, = zax.plot(X, Y, **kwlines[zres])
         ooo+=5
     #
-    zax.set_title('('+subnum.pop()+') DIC change, '+r'COU – BGC', loc='left')
+    zax.set_title('('+subnum.pop()+') Climate feedback on\n     total DIC', loc='left')
     zax.set_xlim((-30, 5))       
     zax.locator_params(axis='x', nbins=3)
 
@@ -2769,3 +2771,168 @@ if  savevalues_fig4_1d :
 # END SAVEVALUES FIG4 1D
 ##################################################
 
+##################################################
+# PRINT TEMPERATURE
+##################################################
+if print_temperature :
+
+    print('PRINT TEMPERATURE')
+    print(datetime.datetime.now())
+
+    zmax = 50
+    
+    #====================
+    # PREPARE DATA
+    #====================
+
+    data2print = {'temp':{}, 'sali':{}, 'solub':{}}
+
+    fdir  = '/gpfswork/rech/eee/rdyk004/GYRE_XML/'          
+    fsuf  = '_1y_01010101_01701230_grid_T.xml'
+    start_date  = '0166-01-01'
+    end_date    = '0170-12-31'
+    for vkR in res :
+    
+        if vkR in ['9', '27'] : zwmesh = reading.read_mesh('/gpfswork/rech/eee/rdyk004/MESH/mesh_mask_R'+vkR+'.nc')
+        else :  zwmesh = reading.read_mesh('/gpfswork/rech/eee/rdyk004/MESH/mesh_mask_R1.nc' )
+        #zwmesh = reading.read_mesh('/gpfswork/rech/eee/rdyk004/MESH/mesh_mask_R1.nc' ) # TEST
+
+        temp, sali, solub = {}, {}, {}
+        for simu in ['CTL', 'CC']:
+            fff = fdir + simu + vkR + fsuf
+            #fff = fdir + 'CTL' + '1' + fsuf # TEST
+
+            # TEMP
+            zw1  = reading.read_ncdf('votemper', fff, time=(start_date, end_date))
+            zw1 = zw1['data']
+            zw1 = np.mean(zw1, axis=0) # time average
+            zw1 = averaging.zmean(zw1, zwmesh, zmax=zmax, dim='zyx')
+            zw1 = averaging.ymean(zw1, zwmesh, dim='yx')
+            zw1 = averaging.xmean(zw1, zwmesh, dim='x')
+            temp[simu]= np.array(zw1)
+
+            # SALI
+            zw1  = reading.read_ncdf('vosaline', fff, time=(start_date, end_date))
+            zw1 = zw1['data']
+            zw1 = np.mean(zw1, axis=0) # time average
+            zw1 = averaging.zmean(zw1, zwmesh, zmax=zmax, dim='zyx')
+            zw1 = averaging.ymean(zw1, zwmesh, dim='yx')
+            zw1 = averaging.xmean(zw1, zwmesh, dim='x')
+            sali[simu]= np.array(zw1)
+
+            # SOLUB
+            # """
+            # Compute solubility of CO2 from Weiss (1974)
+            # Kh = [CO2]/ p CO2, Weiss (1974), refitted for moist air Weiss and Price (1980)
+        
+            # inputs: 
+            #     ptho    = temperature [degreeC]
+            #     psao    = salinity    [psu]
+            # outputs: (Kh, Khd) in [mol/l/ppm] and [mol/l/uatm]
+            #     Kh: CO2 solubility for use with partial pressure in dry air 
+            #         (include correction for accounting for water vapor) in [mol/l/ppm]
+            # """
+        
+            # # Carbon chemistry: Caculate equilibrium constants and solve for [H+] and
+            # # carbonate alkalinity (ac)
+            tzero   = 273.15
+            ttk     = temp[simu] + tzero
+            ttk100 = ttk/100.0
+            ac1 = -160.7333
+            ac2 = 215.4152
+            ac3 = 89.8920
+            ac4 = -1.47759
+            bc1 = 0.029941
+            bc2 = -0.027455
+            bc3 = 0.0053407
+            # Kh = [CO2]/ xCO2 dry mole fraction of [CO2]
+            # Weiss (1974), refitted for moist air Weiss and Price (1980) [mol/l/atm]
+            nKhwe74 = ac1 + ac2/ttk100 + ac3*np.log(ttk100) + ac4*ttk100**2 + sali[simu]*(bc1 + bc2*ttk100 + bc3*ttk100**2)
+            Kh     = np.exp(nKhwe74) # in mol/l/atm
+            # Kh: CO2 solubility for use with partial pressure in dry air 
+            #     (include correction for accounting for water vapor)
+            # solub[simu] = Kh*1e-6 # in  mol/l/uatm
+            # solub[simu] = Kh*1e6    # in  mmol/m3/atm
+            solub[simu] = Kh*1000    # in  umol/m3/uatm o umol/m3/ppm
+
+
+        # # CTL
+        # fff = fdir + 'CTL' + vkR + fsuf
+        # #fff = fdir + 'CTL' + '1' + fsuf # TEST
+        # zw1  = reading.read_ncdf('votemper', fff, time=(start_date, end_date))
+        # zw1 = zw1['data']
+        # zw1 = np.mean(zw1, axis=0) # time average
+        # zw1 = averaging.zmean(zw1, zwmesh, zmax=zmax, dim='zyx')
+        # zw1 = averaging.ymean(zw1, zwmesh, dim='yx')
+        # zw1 = averaging.xmean(zw1, zwmesh, dim='x')
+        # zwctl= np.array(zw1)
+        
+        # # COU
+        # fff = fdir + 'CC' + vkR + fsuf
+        # #fff = fdir + 'CC' + '1' + fsuf # TEST
+        # zw1  = reading.read_ncdf('votemper', fff, time=(start_date, end_date))
+        # zw1 = zw1['data']
+        # zw1 = np.mean(zw1, axis=0) # time average
+        # zw1 = averaging.zmean(zw1, zwmesh, zmax=zmax, dim='zyx')
+        # zw1 = averaging.ymean(zw1, zwmesh, dim='yx')
+        # zw1 = averaging.xmean(zw1, zwmesh, dim='x')
+        # zwcou = np.array(zw1)
+
+        data2print['temp']['R'+vkR]={}
+        data2print['temp']['R'+vkR]['CTL'] = temp['CTL']
+        data2print['temp']['R'+vkR]['COU'] = temp['CC']
+        data2print['temp']['R'+vkR]['COU - CTL'] = temp['CC'] - temp['CTL']
+
+        data2print['sali']['R'+vkR]={}
+        data2print['sali']['R'+vkR]['CTL'] = sali['CTL']
+        data2print['sali']['R'+vkR]['COU'] = sali['CC']
+        data2print['sali']['R'+vkR]['COU - CTL'] = sali['CC'] - sali['CTL']
+
+        data2print['solub']['R'+vkR]={}
+        data2print['solub']['R'+vkR]['CTL'] = solub['CTL']
+        data2print['solub']['R'+vkR]['COU'] = solub['CC']
+        data2print['solub']['R'+vkR]['COU - CTL'] = solub['CC'] - solub['CTL']
+
+    #
+    
+
+    #--------------------
+    # AVG1, STD1
+    #--------------------
+    for vvv in ['temp', 'sali', 'solub']: 
+        data2print[vvv]['AVG1'], data2print[vvv]['STD1'] = {}, {}
+        for vkS in ['CTL', 'COU', 'COU - CTL'] :
+            zw = []
+            for vkR in r1s : zw.append(data2print[vvv]['R'+vkR][vkS])
+            zw = np.array(zw)
+            data2print[vvv]['AVG1'][vkS] = np.nanmean(zw, axis=0)
+            data2print[vvv]['STD1'][vkS] = unc*np.nanstd(zw, axis=0)
+        #
+    #
+        
+    
+    #====================
+    # PRINT
+    #====================
+
+    print("\n#########################")
+    print("#########################")
+    print(datetime.datetime.now())
+    print('temperature average on the %.0f first meters'%zmax)
+
+    for kkk0, vvv0 in data2print.items():
+        print('\n==============================\n%s\n==============================\n'%kkk0)
+        for kkk1, vvv1 in vvv0.items(): 
+            print('\n---------------\n%s\n---------------'%kkk1)
+            for kkk2, vvv2 in vvv1.items():
+                print('%s:   %.2f  '%(kkk2, vvv2))
+            #
+        #
+    #
+    print("\n#########################")
+    print("#########################")
+        
+#
+##################################################
+# END PRINT TEMPERATURE
+##################################################
